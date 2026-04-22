@@ -30,8 +30,10 @@ app.delete('/api/todos/:id', (req, res) => {
   res.json({ message: 'Supprimé' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend démarré sur http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Backend démarré sur http://localhost:${PORT}`);
+  });
+}
 
 module.exports = app;
