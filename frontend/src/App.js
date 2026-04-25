@@ -1,19 +1,22 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
+const API_URL = '/api';
+
 function App() {
   const [todos, setTodos] = useState([]);
   const [text, setText] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/todos')
+    fetch(`${API_URL}/todos`)
       .then(r => r.json())
-      .then(setTodos);
+      .then(setTodos)
+      .catch(err => console.log(err));
   }, []);
 
   const addTodo = async () => {
     if (!text.trim()) return;
-    const res = await fetch('http://localhost:5000/api/todos', {
+    const res = await fetch(`${API_URL}/todos`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text })
@@ -24,13 +27,13 @@ function App() {
   };
 
   const deleteTodo = async (id) => {
-    await fetch(`http://localhost:5000/api/todos/${id}`, { method: 'DELETE' });
+    await fetch(`${API_URL}/todos/${id}`, { method: 'DELETE' });
     setTodos(todos.filter(t => t.id !== id));
   };
 
   return (
     <div style={{ maxWidth: 500, margin: '50px auto', fontFamily: 'Arial' }}>
-      <h1>📝 Todo List</h1>
+      <h1>📝 Todo List - DevOps Project</h1>
       <div style={{ display: 'flex', gap: 8 }}>
         <input
           value={text}
@@ -44,9 +47,9 @@ function App() {
       </div>
       <ul style={{ marginTop: 20, listStyle: 'none', padding: 0 }}>
         {todos.map(todo => (
-          <li key={todo.id} style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
+          <li key={todo.id} style={{
+            display: 'flex',
+            justifyContent: 'space-between',
             padding: 10,
             marginBottom: 8,
             background: '#f5f5f5',
