@@ -2,7 +2,7 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ main, dev, feat/kubernetes ]
+branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
 
@@ -104,4 +104,4 @@ jobs:
         with:
           context: ./frontend
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/devops-todo-frontend:latest
+tags: ${{ secrets.DOCKER_USERNAME }}/devops-todo-frontend:latest
