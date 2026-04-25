@@ -129,3 +129,34 @@ jobs:
           format: table
           exit-code: '0'
           severity: CRITICAL,HIGH
+
+  snyk:
+    name: Security Scan Snyk
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Snyk scan backend
+        working-directory: ./backend
+        run: |
+          npm install
+          npx snyk test --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
+
+      - name: Snyk scan frontend
+        working-directory: ./frontend
+        run: |
+          npm install
+          npx snyk test --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        continue-on-error: true
